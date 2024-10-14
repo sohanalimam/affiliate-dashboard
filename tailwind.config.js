@@ -24,7 +24,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-          'ecomtech': '#8EC73F'
+        'ecomtech': '#8EC73F',
+        'ecomtechLame':'rgb(142, 199, 10)'
         },
         },
       },

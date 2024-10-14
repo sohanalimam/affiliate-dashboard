@@ -6,6 +6,8 @@ import SideNavbar from './components/SideNavbar/SideNavbar';
 import { AiOutlineMenu, AiOutlineCloseCircle, AiOutlineShoppingCart, AiOutlineUser, AiOutlineBell } from "react-icons/ai";
 import Logo from './assets/Desktop White Normal Logo.png'
 import Footer from './components/Footer/Footer';
+import Login from './components/Login/Login';
+import WithdrawModal from './components/WithdrawModal/WithdrawModal';
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -20,7 +22,7 @@ function App() {
           </div>
           <div className='flex justify-center'>
             <Link to='/'><img className='' src={Logo} alt="logo" srcset="" width={200} height={50} /></Link>
-            
+
           </div>
         </div>
         <SideNavbar />
@@ -29,7 +31,9 @@ function App() {
         <Header setOpen={setOpen} open={open} />
         <div className='px-10 mx-auto mt-5'>
           <Outlet />
-          <Footer/>
+          <Footer />
+          {/* <Login/> */}
+          {/* <WithdrawModal /> */}
         </div>
       </div>
     </div>

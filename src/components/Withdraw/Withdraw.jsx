@@ -1,36 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Table, TextInput, Button, Select } from "flowbite-react";
-import { format, subDays, startOfMonth, isWithinInterval } from "date-fns";
+import { format, subDays, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
 
-const Withdraw = () => {
-  // Updated data with bKash, Bank, uCash, Nagad, Rocket types
+const Subscription = () => {
   const [data] = useState([
     { id: "#d1es3", date: new Date(), type: "bKash", amount: 500 },
-    { id: "#a2g4h", date: subDays(new Date(), 1), type: "Bank", amount: 200 },
+    { id: "#a2g4h", date: subDays(new Date(), 1), type: "Nagad", amount: 200 },
     { id: "#f9i2j", date: subDays(new Date(), 2), type: "uCash", amount: 150 },
-    { id: "#k3l6m", date: subDays(new Date(), 5), type: "Nagad", amount: 1000 },
+    { id: "#k3l6m", date: subDays(new Date(), 5), type: "Bank", amount: 1000 },
     { id: "#o9p7q", date: subDays(new Date(), 7), type: "Rocket", amount: 750 },
     { id: "#u2x8v", date: subDays(new Date(), 10), type: "bKash", amount: 320 },
-    { id: "#y4z1b", date: subDays(new Date(), 15), type: "Bank", amount: 540 },
+    { id: "#y4z1b", date: subDays(new Date(), 15), type: "Nagad", amount: 540 },
     { id: "#p8m2n", date: subDays(new Date(), 20), type: "uCash", amount: 810 },
-    { id: "#s9w3c", date: subDays(new Date(), 25), type: "Nagad", amount: 130 },
+    { id: "#s9w3c", date: subDays(new Date(), 25), type: "Bank", amount: 130 },
     { id: "#t1v5d", date: subDays(new Date(), 30), type: "Rocket", amount: 640 },
     { id: "#e3i6f", date: subDays(new Date(), 35), type: "bKash", amount: 920 },
-    { id: "#u4p2q", date: subDays(new Date(), 40), type: "Bank", amount: 1100 },
+    { id: "#u4p2q", date: subDays(new Date(), 40), type: "Nagad", amount: 1100 },
     { id: "#m9r7t", date: subDays(new Date(), 45), type: "uCash", amount: 210 },
-    { id: "#k1o8v", date: subDays(new Date(), 50), type: "Nagad", amount: 630 },
+    { id: "#k1o8v", date: subDays(new Date(), 50), type: "Bank", amount: 630 },
     { id: "#b3p9z", date: subDays(new Date(), 60), type: "Rocket", amount: 490 },
     { id: "#d6w2q", date: subDays(new Date(), 65), type: "bKash", amount: 840 },
-    { id: "#p1e4k", date: subDays(new Date(), 70), type: "Bank", amount: 720 },
+    { id: "#p1e4k", date: subDays(new Date(), 70), type: "Nagad", amount: 720 },
     { id: "#x8v5b", date: subDays(new Date(), 75), type: "uCash", amount: 530 },
-    { id: "#t2q6v", date: subDays(new Date(), 80), type: "Nagad", amount: 760 },
+    { id: "#t2q6v", date: subDays(new Date(), 80), type: "Bank", amount: 760 },
     { id: "#o9b7z", date: subDays(new Date(), 90), type: "Rocket", amount: 390 }
   ]);
 
   const [filteredData, setFilteredData] = useState(data);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -39,7 +38,7 @@ const Withdraw = () => {
   const filterByDate = (filter) => {
     let startDate, endDate;
     const today = new Date();
-    
+
     switch (filter) {
       case "today":
         startDate = today;
@@ -49,13 +48,13 @@ const Withdraw = () => {
         startDate = subDays(today, 1);
         endDate = subDays(today, 1);
         break;
-      case "lastWeek":
-        startDate = subDays(today, 7);
-        endDate = today;
+      case "thisMonth":
+        startDate = startOfMonth(today);
+        endDate = endOfMonth(today);
         break;
       case "lastMonth":
         startDate = startOfMonth(subDays(today, 30));
-        endDate = today;
+        endDate = endOfMonth(subDays(today, 30));
         break;
       default:
         startDate = new Date(dateRange.startDate);
@@ -100,29 +99,31 @@ const Withdraw = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center mb-4">
-        <div className="flex space-x-2 mb-2 md:mb-0">
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-2 md:mb-0 w-full">
           <TextInput
             id="search"
             type="text"
             placeholder="Search by ID, type, amount..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full md:w-1/2"
           />
           <Select
             id="filter"
             onChange={(e) => filterByDate(e.target.value)}
+            className="w-full md:w-1/2"
           >
-            <option value="all">All Time</option>
+            <option value="all">All</option>
             <option value="today">Today</option>
             <option value="yesterday">Yesterday</option>
-            <option value="lastWeek">Last Week</option>
+            <option value="thisMonth">This Month</option>
             <option value="lastMonth">Last Month</option>
           </Select>
         </div>
 
-        <div className="flex space-x-2 items-center">
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-2 md:mt-0 w-full">
           <TextInput
             id="startDate"
             type="date"
@@ -130,8 +131,9 @@ const Withdraw = () => {
             onChange={(e) =>
               setDateRange({ ...dateRange, startDate: e.target.value })
             }
+            className="w-full md:w-1/3"
           />
-          <span>to</span>
+          <span className="self-center">to</span>
           <TextInput
             id="endDate"
             type="date"
@@ -139,29 +141,34 @@ const Withdraw = () => {
             onChange={(e) =>
               setDateRange({ ...dateRange, endDate: e.target.value })
             }
+            className="w-full md:w-1/3"
           />
-          <Button onClick={() => filterByDate("custom")}>Apply</Button>
+          <Button onClick={() => filterByDate("custom")} className="w-full md:w-auto">
+            Apply
+          </Button>
         </div>
       </div>
 
-      <Table hoverable={true}>
-        <Table.Head>
-          <Table.HeadCell>ID</Table.HeadCell>
-          <Table.HeadCell>Date</Table.HeadCell>
-          <Table.HeadCell>Type</Table.HeadCell>
-          <Table.HeadCell>Amount</Table.HeadCell>
-        </Table.Head>
-        <Table.Body>
-          {currentRows.map((row) => (
-            <Table.Row key={row.id}>
-              <Table.Cell>{row.id}</Table.Cell>
-              <Table.Cell>{format(row.date, "yyyy-MM-dd")}</Table.Cell>
-              <Table.Cell>{row.type}</Table.Cell>
-              <Table.Cell>৳{row.amount}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <div className="overflow-x-auto">
+        <Table hoverable={true}>
+          <Table.Head>
+            <Table.HeadCell>ID</Table.HeadCell>
+            <Table.HeadCell>Date</Table.HeadCell>
+            <Table.HeadCell>Type</Table.HeadCell>
+            <Table.HeadCell>Amount</Table.HeadCell>
+          </Table.Head>
+          <Table.Body>
+            {currentRows.map((row) => (
+              <Table.Row key={row.id}>
+                <Table.Cell>{row.id}</Table.Cell>
+                <Table.Cell>{format(row.date, "yyyy-MM-dd")}</Table.Cell>
+                <Table.Cell>{row.type}</Table.Cell>
+                <Table.Cell>৳{row.amount}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
 
       {/* Pagination Controls */}
       <div className="flex justify-between mt-4">
@@ -185,4 +192,4 @@ const Withdraw = () => {
   );
 };
 
-export default Withdraw;
+export default Subscription;

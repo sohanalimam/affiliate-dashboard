@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, TextInput, Button, Select } from "flowbite-react";
-import { format, subDays, startOfMonth, isWithinInterval } from "date-fns";
+import { format, subDays, startOfMonth, endOfMonth, isWithinInterval } from "date-fns";
 
 const Subscription = () => {
-  // Updated data with Startup and Enterprise types
   const [data] = useState([
     { id: "#d1es3", date: new Date(), type: "Startup", amount: 500 },
     { id: "#a2g4h", date: subDays(new Date(), 1), type: "Enterprise", amount: 200 },
@@ -49,13 +48,13 @@ const Subscription = () => {
         startDate = subDays(today, 1);
         endDate = subDays(today, 1);
         break;
-      case "lastWeek":
-        startDate = subDays(today, 7);
-        endDate = today;
+      case "thisMonth":
+        startDate = startOfMonth(today);
+        endDate = endOfMonth(today);
         break;
       case "lastMonth":
         startDate = startOfMonth(subDays(today, 30));
-        endDate = today;
+        endDate = endOfMonth(subDays(today, 30));
         break;
       default:
         startDate = new Date(dateRange.startDate);
@@ -100,29 +99,31 @@ const Subscription = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center mb-4">
-        <div className="flex space-x-2 mb-2 md:mb-0">
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-2 md:mb-0 w-full">
           <TextInput
             id="search"
             type="text"
             placeholder="Search by ID, type, amount..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full md:w-1/2"
           />
           <Select
             id="filter"
             onChange={(e) => filterByDate(e.target.value)}
+            className="w-full md:w-1/2"
           >
-            <option value="all">All Time</option>
+            <option value="all">All</option>
             <option value="today">Today</option>
             <option value="yesterday">Yesterday</option>
-            <option value="lastWeek">Last Week</option>
+            <option value="thisMonth">This Month</option>
             <option value="lastMonth">Last Month</option>
           </Select>
         </div>
 
-        <div className="flex space-x-2 items-center">
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-2 md:mt-0 w-full">
           <TextInput
             id="startDate"
             type="date"
@@ -130,8 +131,9 @@ const Subscription = () => {
             onChange={(e) =>
               setDateRange({ ...dateRange, startDate: e.target.value })
             }
+            className="w-full md:w-1/3"
           />
-          <span>to</span>
+          <span className="self-center">to</span>
           <TextInput
             id="endDate"
             type="date"
@@ -139,29 +141,34 @@ const Subscription = () => {
             onChange={(e) =>
               setDateRange({ ...dateRange, endDate: e.target.value })
             }
+            className="w-full md:w-1/3"
           />
-          <Button onClick={() => filterByDate("custom")}>Apply</Button>
+          <Button onClick={() => filterByDate("custom")} className="w-full md:w-auto">
+            Apply
+          </Button>
         </div>
       </div>
 
-      <Table hoverable={true}>
-        <Table.Head>
-          <Table.HeadCell>ID</Table.HeadCell>
-          <Table.HeadCell>Date</Table.HeadCell>
-          <Table.HeadCell>Type</Table.HeadCell>
-          <Table.HeadCell>Amount</Table.HeadCell>
-        </Table.Head>
-        <Table.Body>
-          {currentRows.map((row) => (
-            <Table.Row key={row.id}>
-              <Table.Cell>{row.id}</Table.Cell>
-              <Table.Cell>{format(row.date, "yyyy-MM-dd")}</Table.Cell>
-              <Table.Cell>{row.type}</Table.Cell>
-              <Table.Cell>৳{row.amount}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <div className="overflow-x-auto">
+        <Table hoverable={true}>
+          <Table.Head>
+            <Table.HeadCell>ID</Table.HeadCell>
+            <Table.HeadCell>Date</Table.HeadCell>
+            <Table.HeadCell>Type</Table.HeadCell>
+            <Table.HeadCell>Amount</Table.HeadCell>
+          </Table.Head>
+          <Table.Body>
+            {currentRows.map((row) => (
+              <Table.Row key={row.id}>
+                <Table.Cell>{row.id}</Table.Cell>
+                <Table.Cell>{format(row.date, "yyyy-MM-dd")}</Table.Cell>
+                <Table.Cell>{row.type}</Table.Cell>
+                <Table.Cell>৳{row.amount}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
 
       {/* Pagination Controls */}
       <div className="flex justify-between mt-4">

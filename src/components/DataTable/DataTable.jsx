@@ -91,7 +91,7 @@ export function DataTable() {
   console.log(transactions);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto z-0">
       <Table>
         <Table.Head>
           <Table.HeadCell>ID</Table.HeadCell>
