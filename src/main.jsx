@@ -10,6 +10,7 @@ import Profile from './components/Profile/Profile.jsx';
 import Withdraw from './components/Withdraw/Withdraw.jsx';
 import Dashboard from './components/Dashboard/Dashboard.jsx';
 import Subscription from './components/Subscription/Subscription.jsx';
+import LoginAndSignUp from './components/LoginAndSignUp/LoginAndSignUp.jsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "Profile",
         element: <Profile />
+      },
+      {
+        path: "LoginAndSignUp",
+        element: <LoginAndSignUp />
       }
     ],
   },

@@ -58,7 +58,7 @@ function Dashboard() {
   };
 
   return (
-    <div className='p-4 md:p-8'>
+    <div>
       <p>{currentDate}</p>
       <h1 className='text-2xl md:text-3xl lg:text-4xl font-bold'>Hello ViralValy</h1>
 

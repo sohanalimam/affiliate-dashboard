@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AiOutlineMenu, AiOutlineCloseCircle, AiOutlineShoppingCart, AiOutlineUser, AiOutlineBell } from "react-icons/ai";
 import { IoIosLogOut } from "react-icons/io";
 import { Link } from 'react-router-dom';
+import Notification from '../../Utilities/Notifications/Notifications';
 
 export default function Header({ open, setOpen }) {
 
@@ -16,9 +17,10 @@ export default function Header({ open, setOpen }) {
               }
             </div>
             <div className='flex w-1/12 absolute inset-y-0 right-10 justify-evenly items-center'>
-              <AiOutlineBell className='cursor-pointer text-2xl' />
+              <Notification/>
               <Link to="/profile"><AiOutlineUser className='cursor-pointer text-2xl' /></Link>
-              <IoIosLogOut className='cursor-pointer text-2xl' />
+              <Link to="/"><IoIosLogOut className='cursor-pointer text-2xl' /></Link>
+              
 
             </div>
           </div>

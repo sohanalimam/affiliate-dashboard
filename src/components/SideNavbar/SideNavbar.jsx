@@ -1,15 +1,9 @@
 import React from 'react';
-import { BiSolidWidget } from "react-icons/bi";
 import { PiStorefrontThin, PiHandWithdrawThin } from "react-icons/pi";
 import { IoIosLogOut } from "react-icons/io";
 import { FiBarChart } from "react-icons/fi";
 import { AiOutlineUser } from "react-icons/ai";
 import { RxDashboard } from "react-icons/rx";
-
-
-
-
-
 import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
@@ -32,13 +26,17 @@ const navItems = [
     url: '/profile',
     name: 'Profile',
     icon: <AiOutlineUser/>
+  },
+  {
+    url: '/loginandsignup',
+    name: 'LoginAndSignUp',
+    icon: <AiOutlineUser/>
   }
 ]
 
 
 const SideNavbar = () => {
   const location = useLocation();
-  console.log(location.pathname);
   
   return (
     <div className='overflow-y-auto h-[calc(100vh-80px)] hide-scrollbar'> 
